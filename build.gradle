@@ -24,7 +24,7 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
-    // mysql
+    // mysql 의존성 추가
     implementation 'com.mysql:mysql-connector-j'
 }
 

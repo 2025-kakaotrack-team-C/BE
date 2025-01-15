@@ -16,7 +16,7 @@ public class ProjectApiController {
 
     private final ProjectService projectService;
 
-    // 프로젝트 생성(create)
+    // 새 프로젝트 생성(create)
     @PostMapping("api/projects")
     public ResponseEntity<Project> addProject(@RequestBody addProjectRequest request) {
         // projectService를 사용해서 새로운 프로젝트 저장

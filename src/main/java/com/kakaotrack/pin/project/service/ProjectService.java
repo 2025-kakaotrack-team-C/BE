@@ -6,7 +6,7 @@ import com.kakaotrack.pin.project.repository.ProjectRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-@RequiredArgsConstructor
+@RequiredArgsConstructor    // final이나 null 을 위해
 @Service
 public class ProjectService {
 

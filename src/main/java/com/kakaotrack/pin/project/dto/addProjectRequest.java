@@ -24,6 +24,7 @@ public class addProjectRequest {
     private Integer status;
 
 
+    // Project 빌드
     public Project toEntity() {
         return Project.builder()
                 .userId(userId)

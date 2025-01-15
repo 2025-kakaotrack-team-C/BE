@@ -27,6 +27,7 @@ public class Project {
     private Long projectId;
 
     // 유저 entity 생성 전 임시 데이터
+    // 유저 entity 생성 시 fk - 다대일
     @Column(name = "user_id")
     private Long userId;
 
