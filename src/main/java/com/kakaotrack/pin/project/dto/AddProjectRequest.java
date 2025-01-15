@@ -1,20 +1,17 @@
 package com.kakaotrack.pin.project.dto;
 
 import com.kakaotrack.pin.domain.Project;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class addProjectRequest {
+public class AddProjectRequest {
 
     private Long userId;
     private String title;
@@ -23,6 +20,8 @@ public class addProjectRequest {
     private LocalDate deadline;
     private Integer status;
 
+    @Getter
+    private List<AddFieldRequest> fields;
 
     // Project 빌드
     public Project toEntity() {
