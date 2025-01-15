@@ -3,11 +3,13 @@ package com.kakaotrack.pin.project.controller;
 import com.kakaotrack.pin.domain.Field;
 import com.kakaotrack.pin.domain.Project;
 import com.kakaotrack.pin.project.dto.AddProjectRequest;
+import com.kakaotrack.pin.project.dto.ProjectResponse;
 import com.kakaotrack.pin.project.service.ProjectService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,6 +37,11 @@ public class ProjectApiController {
 
         // 생성된 프로젝트 엔티티 + http 201(created) 상태 반환
         return ResponseEntity.status(HttpStatus.CREATED).body(saveProject);
+    }
 
+    // 프로젝트 전체 조회
+    @GetMapping("/api/projects")
+    public List<ProjectResponse> findAllProjects() {
+        return projectService.findAll();
     }
 }

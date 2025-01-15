@@ -17,29 +17,7 @@
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="d6637ff5-2306-47cd-845d-c99d1421e540">
-      <console name="pin" type="STANDARD" schema="pin" session="Main"><![CDATA[use pin;
-
-show tables;
-
-select * from test;
-
-drop table test;
-
-select
-    p.created_at,
-    p.deadline,
-    p.description,
-    p.difficult,
-    p.project_id,
-    p.status,
-    p.title,
-    p.updated_at,
-    p.user_id
-from
-    project p;
-
-select * from project;
-select * from field;]]></console>
+      <console name="pin" type="STANDARD" schema="" session="Main" />
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseEditorStateManager">

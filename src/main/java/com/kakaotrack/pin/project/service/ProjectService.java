@@ -4,6 +4,7 @@ import com.kakaotrack.pin.domain.Field;
 import com.kakaotrack.pin.domain.Project;
 import com.kakaotrack.pin.project.dto.AddFieldRequest;
 import com.kakaotrack.pin.project.dto.AddProjectRequest;
+import com.kakaotrack.pin.project.dto.ProjectResponse;
 import com.kakaotrack.pin.project.repository.FieldRepository;
 import com.kakaotrack.pin.project.repository.ProjectRepository;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor    // final이나 null 을 위해
 @Service
@@ -37,5 +39,14 @@ public class ProjectService {
         }
 
         return fieldRepository.saveAll(savedFields);
+    }
+
+    // 프로젝트 전체 조회
+    public List<ProjectResponse> findAll() {
+        List<Project> projects = projectRepository.findAll();
+
+        return projects.stream()
+                .map(ProjectResponse::new)  // project -> ProjectResponse 변환
+                .collect(Collectors.toList());
     }
 }
