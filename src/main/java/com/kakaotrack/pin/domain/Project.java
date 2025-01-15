@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -26,6 +28,9 @@ import java.util.List;
 @Table(name = "project")
 public class Project {
 
+    // TODO 유효성 검사 추가
+    // TODO 디테일 추가하기 (다른 엔티티도)
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // 기본키 자동 증가
     @Column(name = "project_id", updatable = false) // 수정 불가
@@ -36,7 +41,7 @@ public class Project {
     @Column(name = "user_id")
     private Long userId;
 
-    @Column(name = "title", length = 40)
+    @Column(name = "title", nullable = false, length = 40)
     private String title;
 
     @Column(name = "description", length = 255)
