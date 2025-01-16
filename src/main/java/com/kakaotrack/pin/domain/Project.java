@@ -78,6 +78,6 @@ public class Project {
         this.description = description;
         this.difficult = difficult;
         this.deadline = deadline;
-        this.status = (status != null) ? status : 0;    // 기본값 설정
+        this.status = (status != null) ? status : 0;   // 기본값 설정
     }
 }
