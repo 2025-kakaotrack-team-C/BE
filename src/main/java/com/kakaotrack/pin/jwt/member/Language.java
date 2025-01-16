@@ -1,0 +1,21 @@
+package com.kakaotrack.pin.jwt.member;
+
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
+
+@Entity
+@Getter
+@Setter
+public class Language {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int languageId;  // PK
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")  // FK
+    private Member member;
+
+    private int language;
+}
