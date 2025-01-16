@@ -1,6 +1,7 @@
 package com.kakaotrack.pin.domain;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.kakaotrack.pin.jwt.member.Member;
 import jakarta.persistence.*;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.AllArgsConstructor;
@@ -30,6 +31,7 @@ public class Project {
 
     // TODO 유효성 검사 추가
     // TODO 디테일 추가하기 (다른 엔티티도)
+    // TODO member 연결 (무한 참조 설정)
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // 기본키 자동 증가
@@ -38,8 +40,13 @@ public class Project {
 
     // 유저 entity 생성 전 임시 데이터
     // 유저 entity 생성 시 fk - 다대일
-    @Column(name = "user_id", columnDefinition = "integer default 1")
-    private Long userId;
+//    @Column(name = "user_id", columnDefinition = "integer default 1")
+//    private Long userId;
+
+    // Member와 연결 (FK)
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = true)  // 탈퇴 유저를 위해 nullable = true
+    private Member member;
 
     @Column(name = "title", nullable = false, length = 40)
     private String title;
@@ -72,12 +79,16 @@ public class Project {
     private List<Field> fields = new ArrayList<>();     // project 하나 당 field가 여러개일 수 있으므로 list로 설정
 
     @Builder
-    public Project(Long userId, String title, String description, Integer difficult, LocalDate deadline, Integer status) {
-        this.userId = userId;
+    public Project(Member member, String title, String description, Integer difficult, LocalDate deadline, Integer status) {
+        this.member = member;
         this.title = title;
         this.description = description;
         this.difficult = difficult;
         this.deadline = deadline;
         this.status = (status != null) ? status : 0;   // 기본값 설정
+    }
+
+    public void setMember(Member member) {
+        this.member = member;
     }
 }

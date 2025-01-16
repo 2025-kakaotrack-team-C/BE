@@ -1,12 +1,8 @@
 package com.kakaotrack.pin.jwt.member;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import com.kakaotrack.pin.domain.Project;
+import jakarta.persistence.*;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -54,6 +50,11 @@ public class Member implements UserDetails {
 
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+    // Project 엔티티 (일대다)
+    @OneToMany(mappedBy = "member")
+    @Builder.Default
+    private List<Project> projects = new ArrayList<>();
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default

@@ -2,6 +2,8 @@ package com.kakaotrack.pin.project.service;
 
 import com.kakaotrack.pin.domain.Field;
 import com.kakaotrack.pin.domain.Project;
+import com.kakaotrack.pin.jwt.member.Member;
+import com.kakaotrack.pin.jwt.repository.MemberRepository;
 import com.kakaotrack.pin.project.dto.AddFieldRequest;
 import com.kakaotrack.pin.project.dto.AddProjectRequest;
 import com.kakaotrack.pin.project.dto.ProjectResponse;
@@ -20,10 +22,18 @@ public class ProjectService {
 
     private final ProjectRepository projectRepository;
     private final FieldRepository fieldRepository;
+    private final MemberRepository memberRepository;
 
     // 프로젝트 저장
     public Project save(AddProjectRequest request) {
-        return projectRepository.save(request.toEntity());
+        // 사용자 조회
+        Member member = memberRepository.findById(request.getUserId())
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        // Project 엔티티 생성
+        Project project = request.toEntity();
+        project.setMember(member);
+
+        return projectRepository.save(project);
     }
 
     // field 저장
