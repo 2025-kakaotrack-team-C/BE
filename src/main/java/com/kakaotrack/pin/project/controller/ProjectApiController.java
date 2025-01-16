@@ -40,7 +40,7 @@ public class ProjectApiController {
     }
 
     // 프로젝트 전체 조회
-    @GetMapping("/api/projects")
+    @GetMapping("api/projects")
     public List<ProjectResponse> findAllProjects() {
         return projectService.findAll();
     }
