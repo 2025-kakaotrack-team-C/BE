@@ -38,7 +38,7 @@ public class Project {
 
     // 유저 entity 생성 전 임시 데이터
     // 유저 entity 생성 시 fk - 다대일
-    @Column(name = "user_id")
+    @Column(name = "user_id", columnDefinition = "integer default 1")
     private Long userId;
 
     @Column(name = "title", nullable = false, length = 40)
@@ -53,12 +53,12 @@ public class Project {
     @Column(name = "deadline")
     private LocalDate deadline;
 
-    @Column(name = "status")
-    private Integer status;
+    @Column(name = "status", nullable = false, columnDefinition = "integer default 0")
+    private Integer status = 0;
 
     @CreatedDate
     @Column(name = "created_at", updatable = false)
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     @LastModifiedDate
     @Column(name = "updated_at")
@@ -78,6 +78,6 @@ public class Project {
         this.description = description;
         this.difficult = difficult;
         this.deadline = deadline;
-        this.status = status;
+        this.status = (status != null) ? status : 0;   // 기본값 설정
     }
 }
