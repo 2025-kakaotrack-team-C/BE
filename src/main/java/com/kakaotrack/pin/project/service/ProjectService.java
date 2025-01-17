@@ -4,9 +4,7 @@ import com.kakaotrack.pin.domain.Field;
 import com.kakaotrack.pin.domain.Project;
 import com.kakaotrack.pin.jwt.member.Member;
 import com.kakaotrack.pin.jwt.repository.MemberRepository;
-import com.kakaotrack.pin.project.dto.AddFieldRequest;
-import com.kakaotrack.pin.project.dto.AddProjectRequest;
-import com.kakaotrack.pin.project.dto.ProjectResponse;
+import com.kakaotrack.pin.project.dto.*;
 import com.kakaotrack.pin.project.repository.FieldRepository;
 import com.kakaotrack.pin.project.repository.ProjectRepository;
 import lombok.RequiredArgsConstructor;
@@ -60,5 +58,36 @@ public class ProjectService {
         return projects.stream()
                 .map(ProjectResponse::new)  // project -> ProjectResponse 변환
                 .collect(Collectors.toList());
+    }
+
+    // 프로젝트 세부 조회
+    public ProjectViewResponse getProjectDetails (long id){
+        // 프로젝트 조회
+        var project = projectRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Project not found: " + id));
+
+        // 작성자 정보 생성
+        var userResponse = new UserResponse(
+                project.getMember().getId(),
+                project.getMember().getUsername(),
+                project.getMember().getNickname()
+        );
+
+        // 분야(필드) 정보 생성
+        var fieldResponse = project.getFields().stream()
+                .map(field -> new FieldResponse(field.getDepartment(), field.getRange()))
+                .collect(Collectors.toList());
+
+        return new ProjectViewResponse(
+                project.getProjectId(),
+                project.getTitle(),
+                project.getDescription(),
+                project.getDifficult(),
+                project.getDeadline(),
+                project.getStatus(),
+                project.getCreatedAt(),
+                fieldResponse,
+                userResponse
+        );
     }
 }
