@@ -28,7 +28,6 @@ public class AddProjectRequest {
     // Project 빌드
     public Project toEntity() {
         return Project.builder()
-                .member(memberId)   // fk
                 .title(title)
                 .description(description)
                 .difficult(difficult)

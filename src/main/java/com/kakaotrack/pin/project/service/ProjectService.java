@@ -25,11 +25,13 @@ public class ProjectService {
     private final MemberRepository memberRepository;
 
     // 프로젝트 저장
-    public Project save(AddProjectRequest request) {
+    public Project save(AddProjectRequest request, String username) {
+
         // 사용자 조회
-        Member member = memberRepository.findById(request.getUserId())
+        Member member = memberRepository.findByUsername(username)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
-        // Project 엔티티 생성
+
+        // Project 엔티티 생성 ( Member을 Project에 설정)
         Project project = request.toEntity();
         project.setMember(member);
 
