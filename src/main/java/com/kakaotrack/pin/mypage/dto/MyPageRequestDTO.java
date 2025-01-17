@@ -8,7 +8,7 @@ import java.util.List;
 
 @Getter
 @Setter
-@NoArgsConstructor
+//@NoArgsConstructor
 public class MyPageRequestDTO {
     private String major;
     private String github;

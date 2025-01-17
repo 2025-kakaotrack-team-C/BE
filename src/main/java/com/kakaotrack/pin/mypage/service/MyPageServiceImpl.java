@@ -17,7 +17,8 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+// 필요할 때만 사용하기(여러명의 사용자가 조회를 할 때 필요!
+//@Transactional(readOnly = true)
 public class MyPageServiceImpl implements MyPageService{
     private final MemberRepository memberRepository;
     private final LanguageRepository languageRepository;

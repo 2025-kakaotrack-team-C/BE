@@ -8,7 +8,7 @@ import java.util.List;
 
 @Getter
 @Setter
-@NoArgsConstructor
+//@NoArgsConstructor
 public class MyPageResponseDTO {
     private String username;
     private String major;
