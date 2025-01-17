@@ -7,6 +7,7 @@ import com.kakaotrack.pin.jwt.repository.MemberRepository;
 import com.kakaotrack.pin.project.dto.*;
 import com.kakaotrack.pin.project.repository.FieldRepository;
 import com.kakaotrack.pin.project.repository.ProjectRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -89,5 +90,32 @@ public class ProjectService {
                 fieldResponse,
                 userResponse
         );
+    }
+
+    // 프로젝트 수정
+    // TODO: 수정할 때 분야 추가하면 오류
+    @Transactional
+    public Project updateProject(Long projectId, UpdateProjectRequest request) {
+        // 프로젝트 조회
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new IllegalArgumentException("Project not found: " + projectId));
+
+        // 프로젝트 정보 수정
+        project.update(request.getTitle(), request.getDescription(), request.getDifficult(), request.getDeadline());
+
+        // 필드 정보 수정 메서드로 전송 (바로 아래 메서드 있음)
+        updateFields(project, request.getFields());
+
+        return project;
+    }
+
+    // field 수정 메서드
+    private void updateFields(Project project, List<UpdateFieldRequest> fieldRequests) {
+        for (UpdateFieldRequest fieldRequest : fieldRequests) {
+            Field field = fieldRepository.findById(fieldRequest.getFieldId())
+                    .orElseThrow(() -> new IllegalArgumentException("Field not found: " + fieldRequest.getFieldId()));
+
+            field.update(fieldRequest.getDepartment(), fieldRequest.getRange());
+        }
     }
 }
