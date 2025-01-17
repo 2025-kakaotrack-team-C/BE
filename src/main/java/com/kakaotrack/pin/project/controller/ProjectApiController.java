@@ -9,6 +9,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,8 +27,11 @@ public class ProjectApiController {
     @PostMapping("api/projects")
     @Transactional
     public ResponseEntity<Project> addProject(@RequestBody AddProjectRequest request) {
-        // projectService를 사용해서 새로운 프로젝트 저장
-        Project saveProject = projectService.save(request);
+        // 로그인 한 유저 정보 가져오기 ( username으로 가져옴 )
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        // projectService를 사용해서 새로운 프로젝트 저장 및 필드 연결
+        Project saveProject = projectService.save(request, username);
 
         // Field 저장
         List<Field> fields = projectService.fieldSave(saveProject, request.getFields());
