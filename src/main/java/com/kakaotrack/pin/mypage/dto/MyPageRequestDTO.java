@@ -12,6 +12,6 @@ import java.util.List;
 public class MyPageRequestDTO {
     private String major;
     private String github;
-    private List<Integer> languages;     // 프론트에서 받을 언어 ID 리스트
-    private List<Integer> departments;    // 프론트에서 받을 분야 ID 리스트
+    private List<Integer> language;     // 프론트에서 받을 언어 ID 리스트
+    private List<Integer> department;    // 프론트에서 받을 분야 ID 리스트
 }

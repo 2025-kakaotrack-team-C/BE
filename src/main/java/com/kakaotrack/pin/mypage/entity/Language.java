@@ -12,7 +12,7 @@ import lombok.Setter;
 public class Language {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int languageId;  // PK
+    private Long languageId;  // PK
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")  // FK

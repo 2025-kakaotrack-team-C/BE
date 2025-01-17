@@ -26,7 +26,7 @@ public class MyPageServiceImpl implements MyPageService{
     // 사용자 정보 조회
     public MyPageResponseDTO getMyPageInfo(Long memberId) {
         // 멤버 조회
-        Member member = memberRepository.findById(memberId)
+        Member member = memberRepository.findById(memberId) // 이부분이 문제?
                 .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
 
         // 언어와 분야 정보 조회
@@ -45,8 +45,8 @@ public class MyPageServiceImpl implements MyPageService{
         responseDTO.setUsername(member.getUsername());
         responseDTO.setMajor(member.getMajor());
         responseDTO.setGithub(member.getGithub());
-        responseDTO.setLanguages(languages);
-        responseDTO.setDepartments(departments);
+        responseDTO.setLanguage(languages);
+        responseDTO.setDepartment(departments);
 
         return responseDTO;
     }
@@ -66,21 +66,26 @@ public class MyPageServiceImpl implements MyPageService{
         languageRepository.deleteByMember(member);
         userDepartmentRepository.deleteByMember(member);
 
-        // 새로운 언어 정보 저장
-        requestDTO.getLanguages().forEach(lang -> {
-            Language language = new Language();
-            language.setMember(member);
-            language.setLanguage(lang);
-            languageRepository.save(language);
-        });
+        // 기존 언어, 분야 정보 삭제 및 새로운 정보 저장 (null 체크 추가)
+        if (requestDTO.getLanguage() != null) {
+            languageRepository.deleteByMember(member);
+            requestDTO.getLanguage().forEach(lang -> {
+                Language language = new Language();
+                language.setMember(member);
+                language.setLanguage(lang);
+                languageRepository.save(language);
+            });
+        }
 
-        // 새로운 분야 정보 저장
-        requestDTO.getDepartments().forEach(dept -> {
-            UserDepartment department = new UserDepartment();
-            department.setMember(member);
-            department.setDepartment(dept);
-            userDepartmentRepository.save(department);
-        });
+        if (requestDTO.getDepartment() != null) {
+            userDepartmentRepository.deleteByMember(member);
+            requestDTO.getDepartment().forEach(dept -> {
+                UserDepartment department = new UserDepartment();
+                department.setMember(member);
+                department.setDepartment(dept);
+                userDepartmentRepository.save(department);
+            });
+        }
 
         return getMyPageInfo(memberId);
     }
