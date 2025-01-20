@@ -10,33 +10,9 @@ import com.kakaotrack.pin.project.repository.ProjectRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-@Service
-@RequiredArgsConstructor
-public class ApplicationService {
 
-    private final ApplicationRepository applicationRepository;
-    private final MemberRepository memberRepository;
-    private final ProjectRepository projectRepository;
+public interface ApplicationService {
 
     // 지원서 저장
-    public Application save(AddApplicationRequest request, String username, Long projectId) {
-
-        // 멤버 조회
-        Member member = memberRepository.findByUsername(username)
-                .orElseThrow(() -> new IllegalArgumentException("User not found: " + username));
-
-        // 프로젝트 조회
-        Project project = projectRepository.findById(projectId)
-                .orElseThrow(() -> new IllegalArgumentException("project not found: " + projectId));
-
-        // Application 엔티티 생성
-        Application application = request.toEntity(member, project);
-
-        return applicationRepository.save(application);
-
-
-
-
-
-    }
+    public Application save(AddApplicationRequest request, String username, Long projectId);
 }
