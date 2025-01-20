@@ -79,7 +79,7 @@ public class ProjectServiceImpl implements ProjectService{
 
         // 분야(필드) 정보 생성
         var fieldResponse = project.getFields().stream()
-                .map(field -> new FieldResponse(field.getDepartment(), field.getRange()))
+                .map(field -> new FieldResponse(field.getFieldId(), field.getDepartment(), field.getRange()))
                 .collect(Collectors.toList());
 
         return new ProjectViewResponse(
