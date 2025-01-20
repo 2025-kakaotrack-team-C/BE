@@ -1,6 +1,8 @@
 package com.kakaotrack.pin.jwt.member;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.kakaotrack.pin.domain.Application;
 import com.kakaotrack.pin.domain.Project;
 import jakarta.persistence.*;
 
@@ -51,6 +53,10 @@ public class Member implements UserDetails {
     @OneToMany(mappedBy = "member")
     @Builder.Default
     private List<Project> projects = new ArrayList<>();
+
+    @OneToMany(mappedBy = "appMember")
+    @JsonManagedReference
+    private List<Application> applications = new ArrayList<>();
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default
