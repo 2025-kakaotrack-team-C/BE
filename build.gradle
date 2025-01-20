@@ -39,3 +39,11 @@ dependencies {
 test {
     useJUnitPlatform()
 }
+
+processResources {
+    from 'src/main/resources'
+}
+
+tasks.named('processResources') {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+}

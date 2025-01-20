@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${MYSQL_DATABASE_URL}
+    username: ${MYSQL_DATABASE_USERNAME}
+    password: ${MYSQL_DATABASE_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: update # 나중에 none으로 변경하기
+    properties:
+      hibernate:
+        format_sql: false
+        show_sql: false
