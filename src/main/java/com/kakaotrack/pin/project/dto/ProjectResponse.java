@@ -11,12 +11,14 @@ import java.time.LocalDate;
 
 @Getter
 public class ProjectResponse {
+    private final Long id;
     private final String title;
     private final int totalRange;   // 같은 프로젝트 id의 range 합계
     private final LocalDate deadline;
     private final List<Integer> departments;
 
     public ProjectResponse(Project project) {
+        this.id = project.getProjectId();
         this.title = project.getTitle();
         // Project에 fields 선언해서 getFields 사용 가능
         this.totalRange = project.getFields().stream()

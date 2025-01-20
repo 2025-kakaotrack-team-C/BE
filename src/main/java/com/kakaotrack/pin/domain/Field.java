@@ -43,4 +43,10 @@ public class Field {
     public void setProject(Project project) {
         this.project = project;
     }
+
+    // 수정을 위한
+    public void update(Integer department, Integer range) {
+        this.department = department;
+        this.range = range;
+    }
 }

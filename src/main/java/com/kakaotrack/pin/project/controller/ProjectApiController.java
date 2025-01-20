@@ -2,9 +2,7 @@ package com.kakaotrack.pin.project.controller;
 //
 import com.kakaotrack.pin.domain.Field;
 import com.kakaotrack.pin.domain.Project;
-import com.kakaotrack.pin.project.dto.AddProjectRequest;
-import com.kakaotrack.pin.project.dto.ProjectResponse;
-import com.kakaotrack.pin.project.dto.ProjectViewResponse;
+import com.kakaotrack.pin.project.dto.*;
 import com.kakaotrack.pin.project.service.ProjectService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +12,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @RequiredArgsConstructor
 @RestController
@@ -52,4 +52,13 @@ public class ProjectApiController {
     public ProjectViewResponse getProjectDetails(@PathVariable long id) {
         return projectService.getProjectDetails(id);
     }
+
+    // 프로젝트 수정(필드 수정 포함)
+    @PutMapping("/api/projects/{id}")
+    public Project updateProject(@PathVariable Long id,
+                                 @RequestBody UpdateProjectRequest request) {
+
+        return projectService.updateProject(id, request);
+    }
+
 }

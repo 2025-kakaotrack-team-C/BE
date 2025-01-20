@@ -91,4 +91,12 @@ public class Project {
     public void setMember(Member member) {
         this.member = member;
     }
+
+    // 수정할 때 update 메서드 추가
+    public void update(String title, String description, Integer difficult, LocalDate deadline) {
+        this.title = title;
+        this.description = description;
+        this.difficult = difficult;
+        this.deadline = deadline;
+    }
 }
