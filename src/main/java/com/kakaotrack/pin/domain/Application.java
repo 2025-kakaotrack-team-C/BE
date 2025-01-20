@@ -55,12 +55,4 @@ public class Application {
         this.department = department;
         this.status = (status != null) ? status : 1;
     }
-
-    public void setAppMember(Member member) {
-        this.appMember = member;
-    }
-
-    public void setAppProject(Project project) {
-        this.appProject = project;
-    }
 }
