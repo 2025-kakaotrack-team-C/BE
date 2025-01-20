@@ -1,16 +1,16 @@
 package com.kakaotrack.pin.application.controller;
 
 import com.kakaotrack.pin.application.dto.AddApplicationRequest;
+import com.kakaotrack.pin.application.dto.ApplicationResponse;
 import com.kakaotrack.pin.application.service.ApplicationService;
 import com.kakaotrack.pin.domain.Application;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,5 +28,11 @@ public class ApplicationApiController {
         Application saveApplication = applicationService.save(request, username, id);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(saveApplication);
+    }
+
+    // 지원서 조회
+    @GetMapping("api/applications")
+    public List<ApplicationResponse> findAll() {
+        return applicationService.findAll();
     }
 }
