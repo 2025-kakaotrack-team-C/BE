@@ -10,6 +10,8 @@ import java.util.List;
 @Setter
 //@NoArgsConstructor
 public class MyPageResponseDTO {
+    private Long id;
+    private String nickname;
     private String username;
     private String major;
     private String github;

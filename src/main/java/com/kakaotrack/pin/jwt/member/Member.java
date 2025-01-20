@@ -38,7 +38,9 @@ public class Member implements UserDetails {
     @Column(nullable = false)
     private String password;
 
+    @Column(name = "nickname")
     private String nickname;
+
     private String major;
     private String github;
 
