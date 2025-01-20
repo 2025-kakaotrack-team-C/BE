@@ -78,6 +78,10 @@ public class Project {
     @JsonManagedReference // 무한 참조 방지
     private List<Field> fields = new ArrayList<>();     // project 하나 당 field가 여러개일 수 있으므로 list로 설정
 
+    @OneToMany(mappedBy = "appProject")
+    @JsonManagedReference
+    private List<Application> applications = new ArrayList<>();
+
     @Builder
     public Project(Member member, String title, String description, Integer difficult, LocalDate deadline, Integer status) {
         this.member = member;
