@@ -1,5 +1,6 @@
 package com.kakaotrack.pin.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.kakaotrack.pin.jwt.member.Member;
 import jakarta.persistence.*;
@@ -79,7 +80,7 @@ public class Project {
     private List<Field> fields = new ArrayList<>();     // project 하나 당 field가 여러개일 수 있으므로 list로 설정
 
     @OneToMany(mappedBy = "appProject")
-    @JsonManagedReference
+    @JsonIgnore
     private List<Application> applications = new ArrayList<>();
 
     @Builder

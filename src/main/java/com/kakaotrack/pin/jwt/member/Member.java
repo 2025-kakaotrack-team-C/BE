@@ -57,7 +57,7 @@ public class Member implements UserDetails {
     private List<Project> projects = new ArrayList<>();
 
     @OneToMany(mappedBy = "appMember")
-    @JsonManagedReference
+    @Builder.Default
     private List<Application> applications = new ArrayList<>();
 
     @ElementCollection(fetch = FetchType.EAGER)
