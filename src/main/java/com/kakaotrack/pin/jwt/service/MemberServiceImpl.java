@@ -34,10 +34,17 @@ public class MemberServiceImpl implements MemberService {
             throw new RuntimeException("이미 존재하는 사용자명입니다.");
         }
 
+
+        // nickname
+        if (memberRepository.findByNickname(signUpDto.getNickname()).isPresent()) {
+            throw new RuntimeException("이미 존재하는 닉네임입니다.");
+        }
+
         // Member 객체 생성 (비밀번호 암호화)
         Member member = Member.builder()
                 .username(signUpDto.getUsername())
                 .password(passwordEncoder.encode(signUpDto.getPassword()))
+                .nickname(signUpDto.getNickname()) // add nickname
                 .roles(Collections.singletonList("ROLE_USER"))
                 .build();
 

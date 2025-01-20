@@ -48,6 +48,8 @@ public class MyPageServiceImpl implements MyPageService{
         responseDTO.setGithub(member.getGithub());
         responseDTO.setLanguage(languages);
         responseDTO.setDepartment(departments);
+        responseDTO.setNickname(member.getNickname());
+        responseDTO.setId(member.getId());
 
         return responseDTO;
     }
