@@ -1,6 +1,7 @@
 package com.kakaotrack.pin.application.service;
 
 import com.kakaotrack.pin.application.dto.AddApplicationRequest;
+import com.kakaotrack.pin.application.dto.ApplicationResponse;
 import com.kakaotrack.pin.application.repository.ApplicationRepository;
 import com.kakaotrack.pin.domain.Application;
 import com.kakaotrack.pin.domain.Project;
@@ -9,6 +10,9 @@ import com.kakaotrack.pin.jwt.repository.MemberRepository;
 import com.kakaotrack.pin.project.repository.ProjectRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -33,5 +37,14 @@ public class ApplicationServiceImpl implements ApplicationService {
 
         return applicationRepository.save(application);
 
+    }
+
+    // 지원서 조회
+    public List<ApplicationResponse> findAll(){
+        List<Application> applications = applicationRepository.findAll();
+
+        return applications.stream()
+                .map(ApplicationResponse::new)  // ApplicationResponse로 변환
+                .collect(Collectors.toList());  // 리스트로
     }
 }
