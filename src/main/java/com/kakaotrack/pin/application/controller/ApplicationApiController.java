@@ -35,4 +35,11 @@ public class ApplicationApiController {
     public List<ApplicationResponse> findAll() {
         return applicationService.findAll();
     }
+
+    // 지원서 수락
+    @PutMapping("api/applications/{applicationId}/accept")
+    public ResponseEntity<Void> acceptApplication(@PathVariable Long applicationId) {
+        applicationService.acceptApplication(applicationId, 2);
+        return ResponseEntity.ok().build();
+    }
 }

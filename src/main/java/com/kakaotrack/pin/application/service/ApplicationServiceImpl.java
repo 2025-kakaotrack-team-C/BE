@@ -47,4 +47,18 @@ public class ApplicationServiceImpl implements ApplicationService {
                 .map(ApplicationResponse::new)  // ApplicationResponse로 변환
                 .collect(Collectors.toList());  // 리스트로
     }
+
+    // 지원서 수락
+    public void acceptApplication(Long applicationId, Integer status){
+        // 지원서 조회
+        Application application = applicationRepository.findById(applicationId)
+                .orElseThrow(() -> new IllegalArgumentException("Application not found: " + applicationId));
+
+        // 지원서 상태 변경
+        application.setStatus(status);
+
+        // DB 저장
+        applicationRepository.save(application);
+    }
+
 }
