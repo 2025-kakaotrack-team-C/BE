@@ -49,15 +49,28 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     // 지원서 수락
+    // TODO 수락 시 멤버 테이블 저장
     public void acceptApplication(Long applicationId, Integer status){
         // 지원서 조회
         Application application = applicationRepository.findById(applicationId)
                 .orElseThrow(() -> new IllegalArgumentException("Application not found: " + applicationId));
 
-        // 지원서 상태 변경
+        // 지원서 상태 변경 (2 = 수락)
         application.setStatus(status);
 
         // DB 저장
+        applicationRepository.save(application);
+    }
+
+    // 지원서 거절
+    public void rejectApplication(Long applicationId, Integer status) {
+        // 지원서 조회
+        Application application = applicationRepository.findById(applicationId)
+                .orElseThrow(() -> new IllegalArgumentException("Application not found: " + applicationId));
+
+        // 지원서 상태 변경 (3 = 거절)
+        application.setStatus(status);
+
         applicationRepository.save(application);
     }
 

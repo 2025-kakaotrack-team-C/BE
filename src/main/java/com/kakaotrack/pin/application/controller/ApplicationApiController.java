@@ -42,4 +42,12 @@ public class ApplicationApiController {
         applicationService.acceptApplication(applicationId, 2);
         return ResponseEntity.ok().build();
     }
+
+    // 지원서 거절
+    @PutMapping("api/applications/{applicationId}/reject")
+    public ResponseEntity<Void> rejectApplication(@PathVariable Long applicationId) {
+        applicationService.rejectApplication(applicationId, 3);
+        return ResponseEntity.ok().build();
+    }
+
 }
