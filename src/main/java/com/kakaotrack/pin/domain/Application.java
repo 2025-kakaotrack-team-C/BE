@@ -55,4 +55,8 @@ public class Application {
         this.department = department;
         this.status = (status != null) ? status : 1;
     }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
 }

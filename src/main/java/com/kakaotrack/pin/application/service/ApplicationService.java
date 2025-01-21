@@ -2,14 +2,7 @@ package com.kakaotrack.pin.application.service;
 
 import com.kakaotrack.pin.application.dto.AddApplicationRequest;
 import com.kakaotrack.pin.application.dto.ApplicationResponse;
-import com.kakaotrack.pin.application.repository.ApplicationRepository;
 import com.kakaotrack.pin.domain.Application;
-import com.kakaotrack.pin.domain.Project;
-import com.kakaotrack.pin.jwt.member.Member;
-import com.kakaotrack.pin.jwt.repository.MemberRepository;
-import com.kakaotrack.pin.project.repository.ProjectRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -21,4 +14,7 @@ public interface ApplicationService {
 
     // 지원서 조회
     public List<ApplicationResponse> findAll();
+
+    // 지원서 수락
+    public void acceptApplication(Long applicationId, Integer status);
 }
