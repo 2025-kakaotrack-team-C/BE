@@ -12,19 +12,20 @@ import lombok.Setter;
 public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long review_id;  // PK
+    @Column(name = "review_id")
+    private Long reviewId;
 
     @ManyToOne
-    @JoinColumn(name = "project_id")  // 프로젝트 ID (FK)
+    @JoinColumn(name = "project_id")
     private Project project;
 
     @ManyToOne
-    @JoinColumn(name = "reviewer_id")  // 작성자 ID (FK)
+    @JoinColumn(name = "reviewer_id", referencedColumnName = "user_id")  // Member의 user_id를 참조
     private Member reviewer;
 
     @ManyToOne
-    @JoinColumn(name = "reviewee_id")  // 대상자 ID (FK, Project의 user_id)
+    @JoinColumn(name = "reviewee_id", referencedColumnName = "user_id")  // Member의 user_id를 참조
     private Member reviewee;
 
-    private Integer rating;  // 평가 점수
+    private Integer rating;
 }
