@@ -22,5 +22,5 @@ public class Project_Member {
     @JoinColumn(name = "user_id")
     private Member user;
 
-    private Integer department;
+    private Integer department; // modify
 }
