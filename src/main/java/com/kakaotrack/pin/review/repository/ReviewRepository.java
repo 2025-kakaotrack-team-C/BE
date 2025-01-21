@@ -5,10 +5,9 @@ import com.kakaotrack.pin.review.entity.Review;
 import java.util.List;
 
 public interface ReviewRepository extends JpaRepository<Review, Long> {
-
     // 1. 내가 받은 모든 리뷰 조회
     List<Review> findAllByRevieweeId(Long userId);
 
     // 2. 특정 프로젝트에서 받은 리뷰 조회
-    List<Review> findAllByProjectIdAndRevieweeId(Long projectId, Long userId);
+    List<Review> findAllByProject_ProjectIdAndReviewee_Id(Long projectId, Long userId);
 }

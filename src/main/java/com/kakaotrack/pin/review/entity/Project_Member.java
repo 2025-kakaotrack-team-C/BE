@@ -20,7 +20,7 @@ public class Project_Member {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private Member user;
+    private Member member;
 
     private Integer department; // modify
 }
