@@ -1,7 +1,10 @@
-package com.kakaotrack.pin.application.repository;
+package com.kakaotrack.pin.domain;
 
-import com.kakaotrack.pin.review.entity.Project_Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
+
 public interface ProjectMemberRepository extends JpaRepository<Project_Member, Long> {
+    Optional<Project_Member> findByProjectIdAndUserId(Long projectId, Long userId);
+
 }
