@@ -73,7 +73,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         Project_Member projectMember = new Project_Member();
 
         projectMember.setProject(project);
-        projectMember.setUser(member);
+        projectMember.setMember(member); //modify setUser --> setMember
         projectMember.setDepartment(department);
 
         projectMemberRepository.save(projectMember);

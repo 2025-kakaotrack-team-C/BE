@@ -3,12 +3,13 @@ package com.kakaotrack.pin.review.entity;
 import com.kakaotrack.pin.domain.Project;
 import com.kakaotrack.pin.jwt.member.Member;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Getter
-@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
