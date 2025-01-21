@@ -17,4 +17,7 @@ public interface ApplicationService {
 
     // 지원서 수락
     public void acceptApplication(Long applicationId, Integer status);
+
+    // 지원서 거절
+    public void rejectApplication(Long applicationId, Integer status);
 }
