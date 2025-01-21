@@ -3,11 +3,13 @@ package com.kakaotrack.pin.application.service;
 import com.kakaotrack.pin.application.dto.AddApplicationRequest;
 import com.kakaotrack.pin.application.dto.ApplicationResponse;
 import com.kakaotrack.pin.application.repository.ApplicationRepository;
+import com.kakaotrack.pin.application.repository.ProjectMemberRepository;
 import com.kakaotrack.pin.domain.Application;
 import com.kakaotrack.pin.domain.Project;
 import com.kakaotrack.pin.jwt.member.Member;
 import com.kakaotrack.pin.jwt.repository.MemberRepository;
 import com.kakaotrack.pin.project.repository.ProjectRepository;
+import com.kakaotrack.pin.review.entity.Project_Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final ApplicationRepository applicationRepository;
     private final MemberRepository memberRepository;
     private final ProjectRepository projectRepository;
+    private final ProjectMemberRepository projectMemberRepository;
 
     // 지원서 저장
     public Application save(AddApplicationRequest request, String username, Long projectId) {
@@ -60,6 +63,20 @@ public class ApplicationServiceImpl implements ApplicationService {
 
         // DB 저장
         applicationRepository.save(application);
+
+        // 프로젝트 멤버 테이블 추가
+        addProjectMember(application.getAppProject(), application.getAppMember(), application.getDepartment());
+    }
+
+    // 프로젝트 멤버 테이블 추가 메서드
+    public void addProjectMember(Project project, Member member, Integer department) {
+        Project_Member projectMember = new Project_Member();
+
+        projectMember.setProject(project);
+        projectMember.setUser(member);
+        projectMember.setDepartment(department);
+
+        projectMemberRepository.save(projectMember);
     }
 
     // 지원서 거절
