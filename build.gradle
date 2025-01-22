@@ -47,3 +47,7 @@ processResources {
 tasks.named('processResources') {
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
+
+jar {
+    enabled = false
+}
