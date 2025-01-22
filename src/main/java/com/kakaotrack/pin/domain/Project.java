@@ -97,6 +97,10 @@ public class Project {
         this.member = member;
     }
 
+    public void setStatus(Integer i) {
+        this.status = i;
+    }
+
     // 수정할 때 update 메서드 추가
     public void update(String title, String description, Integer difficult, LocalDate deadline) {
         this.title = title;

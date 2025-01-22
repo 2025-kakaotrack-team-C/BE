@@ -33,15 +33,33 @@ public class Field {
     @Column(name = "range_value", nullable = false)
     private Integer range;
 
+    // 현재 모집된 인원 추가
+    @Column(name = "accept_member")
+    private Integer acceptMember;
+
+    // 모집 상태 추가(1=모집중, 2=모집 완료)
+    @Column(name = "department_member_status")
+    private Integer departmentMemberStatus;
+
     @Builder
-    public Field(Project project, Integer department, Integer range) {
+    public Field(Project project, Integer department, Integer range, Integer acceptMember, Integer departmentMemberStatus) {
         this.project = project;
         this.department = department;
         this.range = range;
+        this.acceptMember = (acceptMember != null) ? acceptMember : 0;
+        this.departmentMemberStatus = (departmentMemberStatus != null) ? departmentMemberStatus : 0;
     }
 
     public void setProject(Project project) {
         this.project = project;
+    }
+
+    public void setAcceptMember(Integer i) {
+        this.acceptMember = i;
+    }
+
+    public void setDepartmentMemberStatus(Integer i) {
+        this.departmentMemberStatus = i;
     }
 
     // 수정을 위한

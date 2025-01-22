@@ -4,6 +4,4 @@ public class addProjectMemberRequest {
     private Integer projectId;
     private Integer memberId;
     private Integer department;
-
-
 }
