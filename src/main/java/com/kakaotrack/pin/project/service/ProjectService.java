@@ -24,7 +24,7 @@ public interface ProjectService {
     public List<Field> fieldSave(Project project, List<AddFieldRequest> requests);
 
     // 프로젝트 전체 조회
-    public List<ProjectResponse> findAll();
+    public List<AllProjectResponse> findAll();
 
     // 프로젝트 세부 조회
     public ProjectViewResponse getProjectDetails (long id);

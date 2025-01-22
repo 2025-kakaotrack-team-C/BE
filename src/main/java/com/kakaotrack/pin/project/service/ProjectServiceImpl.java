@@ -56,11 +56,11 @@ public class ProjectServiceImpl implements ProjectService{
 
     // 프로젝트 전체 조회
     @Override
-    public List<ProjectResponse> findAll() {
+    public List<AllProjectResponse> findAll() {
         List<Project> projects = projectRepository.findAll();
 
         return projects.stream()
-                .map(ProjectResponse::new)  // project -> ProjectResponse 변환
+                .map(AllProjectResponse::new)  // project -> AllProjectResponse 변환
                 .collect(Collectors.toList());
     }
 
@@ -132,6 +132,7 @@ public class ProjectServiceImpl implements ProjectService{
         // 프로젝트 리스폰으로 변경
         ProjectResponse projectResponse = new ProjectResponse(project);
 
+        // TODO 팀 닉ㄱ네임 추가
         // 프로젝트 멤버 정보 생성
         var projectMemberResponse = project.getProjectMembers().stream()
                 .map(projectMember -> new ProjectMemberResponse(projectMember.getMember_id(), projectMember.getDepartment()))
