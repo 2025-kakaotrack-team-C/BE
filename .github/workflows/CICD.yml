@@ -7,7 +7,7 @@
 
 name: Spring Boot & Gradle & Docker & EC2 - CI/CD
 
-# main 브랜치에서 이벤트(push) 발생 시 workfow 실행
+# main 브랜치에서 이벤트(push) 발생 시 workflow 실행
 on:
   push:
     branches: [ "main" ]
