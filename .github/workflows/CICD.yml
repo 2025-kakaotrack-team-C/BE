@@ -72,6 +72,12 @@ jobs:
           script: |
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/pin-server:latest
             sudo docker stop $(sudo docker ps -a -q)
-            sudo docker run -d --log-driver=syslog -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/pin-server:latest
+            sudo docker run -d \
+            -e JWT_SECRET=${{ secrets.JWT_SECRET }} \
+            -e MYSQL_DATABASE_URL=${{ secrets.MYSQL_DATABASE_URL }} \
+            -e MYSQL_DATABASE_USERNAME=${{ secrets.MYSQL_DATABASE_USERNAME }} \
+            -e MYSQL_DATABASE_PASSWORD=${{ secrets.MYSQL_DATABASE_PASSWORD }} \
+            -p 8080:8080 \
+            ${{ secrets.DOCKER_USERNAME }}/pin-server:latest
             sudo docker rm $(sudo docker ps --filter 'status=exited' -a -q)
             sudo docker image prune -a -f
