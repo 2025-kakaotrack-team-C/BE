@@ -16,6 +16,9 @@ public class ProjectResponse {
     private final int totalRange;   // 같은 프로젝트 id의 range 합계
     private final LocalDate deadline;
     private final List<Integer> departments;
+    private final Integer status;
+    private final Integer difficult;
+    private final String description;
 
     public ProjectResponse(Project project) {
         this.id = project.getProjectId();
@@ -28,5 +31,8 @@ public class ProjectResponse {
                 .map(Field::getDepartment)
                 .collect(Collectors.toList());
         this.deadline = project.getDeadline();
+        this.status = project.getStatus();
+        this.difficult = project.getDifficult();
+        this.description = project.getDescription();
     }
 }

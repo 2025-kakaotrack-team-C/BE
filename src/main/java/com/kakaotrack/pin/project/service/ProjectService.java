@@ -35,4 +35,7 @@ public interface ProjectService {
     @Transactional
     public Project updateProject(Long projectId, UpdateProjectRequest request);
 
-    }
+    // 프로젝트 진행중
+    public IngProjectResponse ingProject (long id);
+
+}

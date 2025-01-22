@@ -61,4 +61,10 @@ public class ProjectApiController {
         return projectService.updateProject(id, request);
     }
 
+    // 프로젝트 진행
+    @GetMapping("projects/{id}")
+    public IngProjectResponse ingProject(@PathVariable Long id) {
+        return projectService.ingProject(id);
+    }
+
 }

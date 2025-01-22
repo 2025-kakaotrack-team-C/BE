@@ -3,6 +3,7 @@ package com.kakaotrack.pin.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.kakaotrack.pin.jwt.member.Member;
+import com.kakaotrack.pin.review.entity.Project_Member;
 import jakarta.persistence.*;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.AllArgsConstructor;
@@ -82,6 +83,9 @@ public class Project {
     @OneToMany(mappedBy = "appProject")
     @JsonIgnore
     private List<Application> applications = new ArrayList<>();
+
+    @OneToMany(mappedBy = "project")
+    private List<Project_Member> projectMembers = new ArrayList<>();
 
     @Builder
     public Project(Member member, String title, String description, Integer difficult, LocalDate deadline, Integer status) {
