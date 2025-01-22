@@ -24,6 +24,8 @@ public class ReviewService {
     // 리뷰 생성
     public ReviewResponseDto createReview(ReviewRequestDto requestDto, Long userId) {
         // 1. 리뷰어(로그인한 사용자)가 해당 프로젝트 멤버인지 확인
+        log.info("Project ID: {}, User ID: {}", requestDto.getProjectId(), userId);
+
         Project_Member reviewerMember = project_memberRepository.findByProject_ProjectIdAndMember_Id(requestDto.getProjectId(), userId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 프로젝트의 멤버가 아닙니다."));
 
@@ -49,15 +51,20 @@ public class ReviewService {
 
     // 내가 받은 모든 리뷰 조회
     public List<ReviewResponseDto> getMyReceivedReviews(Long userId) {
+        // revieweeId가 현재 로그인한 사용자인 리뷰만 조회
+        log.info("User ID: {}",userId);
         List<Review> reviews = reviewRepository.findAllByRevieweeId(userId);
         return reviews.stream()
                 .map(ReviewResponseDto::from)
                 .collect(Collectors.toList());
     }
 
-    // 특정 프로젝트에서 받은 리뷰 조회
-    public List<ReviewResponseDto> getProjectReviews(Long projectId, Long userId) {
-        List<Review> reviews = reviewRepository.findAllByProject_ProjectIdAndReviewee_Id(projectId, userId);
+    // 프로젝트별 받은 리뷰 조회
+    public List<ReviewResponseDto> getProjectReviews(Long projectId, ReviewResponseDto responseDto) {
+        List<Review> reviews = reviewRepository.findAllByProject_ProjectIdAndReviewee_Id(
+                projectId,
+                responseDto.getReviewId()
+        );
         return reviews.stream()
                 .map(ReviewResponseDto::from)
                 .collect(Collectors.toList());

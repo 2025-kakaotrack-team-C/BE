@@ -3,9 +3,11 @@ package com.kakaotrack.pin.review.dto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Getter
 @NoArgsConstructor
+@ToString
 public class ReviewRequestDto {
     private Long projectId;
     private Long reviewerId;  // 평가하는 사람 ID 추가
