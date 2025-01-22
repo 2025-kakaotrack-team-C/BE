@@ -18,8 +18,8 @@ public class ReviewController {
 
     // 1. 리뷰 작성
     @PostMapping
-    public ResponseEntity<ReviewResponseDto> createReview(@RequestBody ReviewRequestDto requestDto, @RequestParam Long userId) {
-        return ResponseEntity.ok(reviewService.createReview(requestDto, userId));
+    public ResponseEntity<ReviewResponseDto> createReview(@RequestBody ReviewRequestDto requestDto) {
+        return ResponseEntity.ok(reviewService.createReview(requestDto, requestDto.getReviewerId()));
     }
 
     // 2. 내가 받은 모든 리뷰 조회
