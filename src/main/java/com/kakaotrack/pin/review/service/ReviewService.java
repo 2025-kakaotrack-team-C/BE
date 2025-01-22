@@ -31,7 +31,6 @@ public class ReviewService {
         Project_Member revieweeMember = project_memberRepository.findByProject_ProjectIdAndMember_Id(requestDto.getProjectId(), requestDto.getRevieweeId())
                 .orElseThrow(() -> new IllegalArgumentException("평가 대상자가 해당 프로젝트의 멤버가 아닙니다."));
 
-        // 3. 자기 자신 평가 방지
         if(userId.equals(requestDto.getRevieweeId())) {
             throw new IllegalArgumentException("자기 자신을 평가할 수 없습니다.");
         }

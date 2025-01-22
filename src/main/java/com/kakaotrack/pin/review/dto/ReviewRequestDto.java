@@ -13,9 +13,9 @@ public class ReviewRequestDto {
     private Integer rating;   // 1~5 점수
 
     @Builder
-    public ReviewRequestDto(Long projectId, Long revieweeId, Integer rating) {
+    public ReviewRequestDto(Long projectId,Long reviewerId, Long revieweeId, Integer rating) {
         this.projectId = projectId;
-        this.reviewerId = revieweeId; // modify
+        this.reviewerId = reviewerId; // modify
         this.revieweeId = revieweeId;
         this.rating = rating;
     }
