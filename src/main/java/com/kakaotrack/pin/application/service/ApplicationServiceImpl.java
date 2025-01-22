@@ -5,11 +5,14 @@ import com.kakaotrack.pin.application.dto.ApplicationResponse;
 import com.kakaotrack.pin.application.repository.ApplicationRepository;
 import com.kakaotrack.pin.application.repository.ProjectMemberRepository;
 import com.kakaotrack.pin.domain.Application;
+import com.kakaotrack.pin.domain.Field;
 import com.kakaotrack.pin.domain.Project;
 import com.kakaotrack.pin.jwt.member.Member;
 import com.kakaotrack.pin.jwt.repository.MemberRepository;
+import com.kakaotrack.pin.project.repository.FieldRepository;
 import com.kakaotrack.pin.project.repository.ProjectRepository;
 import com.kakaotrack.pin.review.entity.Project_Member;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +26,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final MemberRepository memberRepository;
     private final ProjectRepository projectRepository;
     private final ProjectMemberRepository projectMemberRepository;
+    private final FieldRepository fieldRepository;
 
     // 지원서 저장
     public Application save(AddApplicationRequest request, String username, Long projectId) {
@@ -52,7 +56,6 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     // 지원서 수락
-    // TODO 수락 시 멤버 테이블 저장
     public void acceptApplication(Long applicationId, Integer status){
         // 지원서 조회
         Application application = applicationRepository.findById(applicationId)
@@ -68,6 +71,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         addProjectMember(application.getAppProject(), application.getAppMember(), application.getDepartment());
     }
 
+    @Transactional
     // 프로젝트 멤버 테이블 추가 메서드
     public void addProjectMember(Project project, Member member, Integer department) {
         Project_Member projectMember = new Project_Member();
@@ -77,6 +81,34 @@ public class ApplicationServiceImpl implements ApplicationService {
         projectMember.setDepartment(department);
 
         projectMemberRepository.save(projectMember);
+
+        // 필드 조회
+        List<Field> fields = fieldRepository.findByProject_ProjectId(project.getProjectId());
+
+        fields.forEach(field -> {
+            // 수락되면 필드의 현재 수락된 멤버 수 증가
+            if (field.getDepartment().equals(projectMember.getDepartment())) {    // 지원한 분야랑 같은 분야 확인
+                field.setAcceptMember(field.getAcceptMember() + 1); // 같으면 지원 수락 된 인원 1 증가
+
+                // 모집 인원보다 모집된 인원이 크거나 같으면 분야 모집 상태 2(모집 완료)로 수정
+                if (field.getAcceptMember() >= field.getRange()) {
+                    field.setDepartmentMemberStatus(2);
+                }
+            }
+        });
+
+        fieldRepository.saveAll(fields);
+
+        // 모집중인 분야가 하나라도 있으면 allFieldsComplete 를 false 로
+        boolean allFieldsComplete = fields.stream()
+                .allMatch(field -> field.getDepartmentMemberStatus() == 2);
+
+        // 모든 필드가 완료 상태면 프로젝트 상태 변경
+        if (allFieldsComplete) {
+            project.setStatus(2);   // 프로젝트 진행중으로 수정
+        }
+        projectRepository.save(project);
+
     }
 
     // 지원서 거절

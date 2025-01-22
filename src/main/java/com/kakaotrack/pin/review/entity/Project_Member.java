@@ -23,4 +23,5 @@ public class Project_Member {
     private Member member;
 
     private Integer department; // modify
+
 }
