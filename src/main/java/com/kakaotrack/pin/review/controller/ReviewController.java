@@ -21,7 +21,7 @@ public class ReviewController {
     // 1. 리뷰 작성
     @PostMapping
     public ResponseEntity<ReviewResponseDto> createReview(@RequestBody ReviewRequestDto requestDto) {
-        log.info("컨트롤러 호출됨");
+        log.info("컨트롤러 호출됨!");
         log.info("RequestDto 내용: {}", requestDto.toString());
         return ResponseEntity.ok(reviewService.createReview(requestDto, requestDto.getReviewerId()));
     }

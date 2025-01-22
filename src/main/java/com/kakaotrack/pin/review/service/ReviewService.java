@@ -24,7 +24,7 @@ public class ReviewService {
     // 리뷰 생성
     public ReviewResponseDto createReview(ReviewRequestDto requestDto, Long userId) {
         // 1. 리뷰어(로그인한 사용자)가 해당 프로젝트 멤버인지 확인
-        log.info("Project ID: {}, User ID: {}", requestDto.getProjectId(), userId);
+        log.info("Project ID: {}, User ID: {}", requestDto.getProjectId(), userId); // check
 
         Project_Member reviewerMember = project_memberRepository.findByProject_ProjectIdAndMember_Id(requestDto.getProjectId(), userId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 프로젝트의 멤버가 아닙니다."));
