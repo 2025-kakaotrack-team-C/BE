@@ -77,6 +77,7 @@ public class ReviewService {
         MemberResponseDto leaderDto = MemberResponseDto.builder()
                 .projectId(project.getProjectId())
                 .projectTitle(project.getTitle())
+                .userId(project.getMember().getId())    // 추가
                 .nickname(project.getMember().getNickname())
                 .language(leaderLanguages.isEmpty() ? 0 : leaderLanguages.get(0).getLanguage())
                 .department(0)
@@ -101,6 +102,7 @@ public class ReviewService {
                 .projectId(pm.getProject().getProjectId())
                 .projectTitle(pm.getProject().getTitle())
                 .nickname(pm.getMember().getNickname())
+                .userId(pm.getMember().getId())     // 추가
                 .language(userLanguages.isEmpty() ? 0 : userLanguages.get(0).getLanguage())
                 .department(pm.getDepartment())
                 .build();

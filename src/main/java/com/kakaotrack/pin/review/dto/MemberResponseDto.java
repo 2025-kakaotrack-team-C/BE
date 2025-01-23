@@ -12,15 +12,17 @@ import lombok.RequiredArgsConstructor;
 public class MemberResponseDto {
     private Long projectId;
     private String projectTitle;
+    private Long userId;          // 추가
     private String nickname;
     private Integer language;
     private Integer department;
 
-    @Builder  // @Builder 어노테이션 추가
+    @Builder
     public MemberResponseDto(Long projectId, String projectTitle,
-                             String nickname, Integer language, Integer department) {
+                             Long userId, String nickname, Integer language, Integer department) {
         this.projectId = projectId;
         this.projectTitle = projectTitle;
+        this.userId = userId;     // 추가
         this.nickname = nickname;
         this.language = language;
         this.department = department;
