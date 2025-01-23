@@ -67,4 +67,9 @@ public class ProjectApiController {
         return projectService.ingProject(id);
     }
 
+    // 프로젝트 마감
+    @PutMapping("projects/{id}")
+    public void finishProject(@PathVariable Long id) {
+        projectService.finishProject(id);
+    }
 }

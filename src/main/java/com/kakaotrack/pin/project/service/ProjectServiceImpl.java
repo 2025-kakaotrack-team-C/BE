@@ -141,4 +141,15 @@ public class ProjectServiceImpl implements ProjectService{
         return new IngProjectResponse(projectResponse, projectMemberResponse);
     }
 
+    // 프로젝트 마감
+    public void finishProject (long id){
+        // 프로젝트 조회
+        Project project = projectRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Project not found: " + id));
+
+        // 프로젝트 상태 변경 (3 = 프로젝트 마감)
+        project.setStatus(3);
+
+        projectRepository.save(project);
+    }
 }
