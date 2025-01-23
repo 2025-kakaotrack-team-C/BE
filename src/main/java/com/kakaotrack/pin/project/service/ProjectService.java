@@ -27,7 +27,7 @@ public interface ProjectService {
     public List<AllProjectResponse> findAll();
 
     // 프로젝트 세부 조회
-    public ProjectViewResponse getProjectDetails (long id);
+    public ProjectViewResponse getProjectDetails(long id);
 
 
     // 프로젝트 수정
@@ -36,6 +36,8 @@ public interface ProjectService {
     public Project updateProject(Long projectId, UpdateProjectRequest request);
 
     // 프로젝트 진행중
-    public IngProjectResponse ingProject (long id);
+    public IngProjectResponse ingProject(long id);
 
+    // 프로젝트 마감
+    public void finishProject(long id);
 }
