@@ -11,4 +11,5 @@ import java.util.List;
 public interface LanguageRepository extends JpaRepository<Language, Integer> {
     List<Language> findByMember(Member member);
     void deleteByMember(Member member);
+    List<Language> findByMember_Id(Long memberId);
 }
