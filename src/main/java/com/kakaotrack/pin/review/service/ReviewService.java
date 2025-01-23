@@ -1,8 +1,10 @@
 package com.kakaotrack.pin.review.service;
 
 import com.kakaotrack.pin.application.repository.ProjectMemberRepository;
+import com.kakaotrack.pin.domain.Project;
 import com.kakaotrack.pin.mypage.entity.Language;
 import com.kakaotrack.pin.mypage.repository.LanguageRepository;
+import com.kakaotrack.pin.project.repository.ProjectRepository;
 import com.kakaotrack.pin.review.dto.MemberResponseDto;
 import com.kakaotrack.pin.review.dto.ReviewRequestDto;
 import com.kakaotrack.pin.review.dto.ReviewResponseDto;
@@ -13,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,6 +28,7 @@ public class ReviewService {
     private final ProjectMemberRepository project_memberRepository;
     private final ProjectMemberRepository projectMemberRepository;
     private final LanguageRepository languageRepository;
+    private final ProjectRepository projectRepository;  // 추가
 
     // 리뷰 생성
     public ReviewResponseDto createReview(ReviewRequestDto requestDto, Long userId) {
@@ -64,27 +68,43 @@ public class ReviewService {
                 .collect(Collectors.toList());
     }
 
-    // project member information
     public List<MemberResponseDto> getProjectMembers(Long projectId) {
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 프로젝트가 없습니다."));
+
+        // 작성자 정보 생성
+        List<Language> leaderLanguages = languageRepository.findByMember_Id(project.getMember().getId());
+        MemberResponseDto leaderDto = MemberResponseDto.builder()
+                .projectId(project.getProjectId())
+                .projectTitle(project.getTitle())
+                .nickname(project.getMember().getNickname())
+                .language(leaderLanguages.isEmpty() ? 0 : leaderLanguages.get(0).getLanguage())
+                .department(0)
+                .build();
+
+        // 팀원 정보 조회
         List<Project_Member> projectMembers = projectMemberRepository.findByProjectProjectId(projectId);
-
-        return projectMembers.stream()
-                .map(pm -> {
-                    List<Language> userLanguages = languageRepository.findByMember_Id(pm.getMember().getId());
-                    // Language가 없는 경우 기본값 0으로 처리
-                    Integer language = userLanguages.isEmpty() ? 0 : userLanguages.get(0).getLanguage();
-
-                    return MemberResponseDto.builder()
-                            .projectId(pm.getProject().getProjectId())
-                            .projectTitle(pm.getProject().getTitle())
-                            .nickname(pm.getMember().getNickname())
-                            .language(language)  // 언어가 없으면 0
-                            .department(pm.getDepartment())
-                            .build();
-                })
+        List<MemberResponseDto> memberDtos = projectMembers.stream()
+                .map(this::convertToDto)
                 .collect(Collectors.toList());
+
+        List<MemberResponseDto> allMembers = new ArrayList<>();
+        allMembers.add(leaderDto);
+        allMembers.addAll(memberDtos);
+
+        return allMembers;
     }
 
+    private MemberResponseDto convertToDto(Project_Member pm) {
+        List<Language> userLanguages = languageRepository.findByMember_Id(pm.getMember().getId());
+        return MemberResponseDto.builder()
+                .projectId(pm.getProject().getProjectId())
+                .projectTitle(pm.getProject().getTitle())
+                .nickname(pm.getMember().getNickname())
+                .language(userLanguages.isEmpty() ? 0 : userLanguages.get(0).getLanguage())
+                .department(pm.getDepartment())
+                .build();
+    }
     // 프로젝트별 받은 리뷰 조회
     public List<ReviewResponseDto> getProjectReviews(Long projectId, ReviewResponseDto responseDto) {
         List<Review> reviews = reviewRepository.findAllByProject_ProjectIdAndReviewee_Id(
