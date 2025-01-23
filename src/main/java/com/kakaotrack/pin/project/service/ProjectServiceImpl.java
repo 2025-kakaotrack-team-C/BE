@@ -7,6 +7,7 @@ import com.kakaotrack.pin.jwt.repository.MemberRepository;
 import com.kakaotrack.pin.project.dto.*;
 import com.kakaotrack.pin.project.repository.FieldRepository;
 import com.kakaotrack.pin.project.repository.ProjectRepository;
+import com.kakaotrack.pin.review.entity.Project_Member;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -55,11 +56,11 @@ public class ProjectServiceImpl implements ProjectService{
 
     // 프로젝트 전체 조회
     @Override
-    public List<ProjectResponse> findAll() {
+    public List<AllProjectResponse> findAll() {
         List<Project> projects = projectRepository.findAll();
 
         return projects.stream()
-                .map(ProjectResponse::new)  // project -> ProjectResponse 변환
+                .map(AllProjectResponse::new)  // project -> AllProjectResponse 변환
                 .collect(Collectors.toList());
     }
 
@@ -122,4 +123,22 @@ public class ProjectServiceImpl implements ProjectService{
             field.update(fieldRequest.getDepartment(), fieldRequest.getRange());
         }
     }
+
+    // 프로젝트 진행중
+    public IngProjectResponse ingProject (long id) {
+        Project project = projectRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("projectId not found: " +  id));
+
+        // 프로젝트 리스폰으로 변경
+        ProjectResponse projectResponse = new ProjectResponse(project);
+
+        // TODO 팀 닉ㄱ네임 추가
+        // 프로젝트 멤버 정보 생성
+        var projectMemberResponse = project.getProjectMembers().stream()
+                .map(projectMember -> new ProjectMemberResponse(projectMember.getMember_id(), projectMember.getDepartment()))
+                .collect(Collectors.toList());
+
+        return new IngProjectResponse(projectResponse, projectMemberResponse);
+    }
+
 }

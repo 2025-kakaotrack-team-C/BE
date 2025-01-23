@@ -43,7 +43,7 @@ public class ProjectApiController {
 
     // 프로젝트 전체 조회
     @GetMapping("api/projects")
-    public List<ProjectResponse> findAllProjects() {
+    public List<AllProjectResponse> findAllProjects() {
         return projectService.findAll();
     }
 
@@ -59,6 +59,12 @@ public class ProjectApiController {
                                  @RequestBody UpdateProjectRequest request) {
 
         return projectService.updateProject(id, request);
+    }
+
+    // 프로젝트 진행
+    @GetMapping("projects/{id}")
+    public IngProjectResponse ingProject(@PathVariable Long id) {
+        return projectService.ingProject(id);
     }
 
 }
