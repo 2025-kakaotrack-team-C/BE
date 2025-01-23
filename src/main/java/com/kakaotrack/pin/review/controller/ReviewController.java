@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/reviews")
@@ -29,12 +30,20 @@ public class ReviewController {
 
     // 1. 리뷰 작성
     @PostMapping
-    public ResponseEntity<ReviewResponseDto> createReview(@RequestBody ReviewRequestDto requestDto) {
+    public ResponseEntity<List<ReviewResponseDto>> createReview(@RequestBody List<ReviewRequestDto> requestDtos) {
         log.info("컨트롤러 호출됨!");
-        log.info("RequestDto 내용: {}", requestDto.toString());
-        return ResponseEntity.ok(reviewService.createReview(requestDto, requestDto.getReviewerId()));
-    }
+        log.info("RequestDto 내용: {}", requestDtos.toString());
 
+        // requestDtos의 첫 번째 요소에서 reviewerId 가져오기 (어차피 같은 사람이 평가)
+        Long reviewerId = requestDtos.get(0).getReviewerId();
+
+        // 각 요청을 처리하여 ResponseDto 리스트 생성
+        List<ReviewResponseDto> responses = requestDtos.stream()
+                .map(dto -> reviewService.createReview(dto, reviewerId))
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(responses);
+    }
     // 내가 받은 모든 리뷰 조회
     @GetMapping
     public ResponseEntity<List<ReviewResponseDto>> getMyReceivedReviews(@RequestParam Long userId) {  // userId는 토큰에서 가져오기
