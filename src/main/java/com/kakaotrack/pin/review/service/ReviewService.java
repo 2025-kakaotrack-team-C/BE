@@ -46,9 +46,16 @@ public class ReviewService {
                     .orElseThrow(() -> new IllegalArgumentException("해당 프로젝트의 멤버가 아닙니다."));
         }
 
-        // 2. 리뷰 대상자가 해당 프로젝트 멤버인지 확인
-        Project_Member revieweeMember = project_memberRepository.findByProject_ProjectIdAndMember_Id(requestDto.getProjectId(), requestDto.getRevieweeId())
-                .orElseThrow(() -> new IllegalArgumentException("평가 대상자가 해당 프로젝트의 멤버가 아닙니다."));
+        // 2. 리뷰 대상자가 프로젝트 작성자이거나 프로젝트 멤버인지 확인
+        Member reviewee;
+        if (project.getMember().getId().equals(requestDto.getRevieweeId())) {
+            reviewee = project.getMember(); // 평가 대상자가 프로젝트 작성자인 경우
+        } else {
+            // 평가 대상자가 프로젝트 멤버인지 확인
+            Project_Member revieweeMember = project_memberRepository.findByProject_ProjectIdAndMember_Id(requestDto.getProjectId(), requestDto.getRevieweeId())
+                    .orElseThrow(() -> new IllegalArgumentException("평가 대상자가 해당 프로젝트의 멤버가 아닙니다."));
+            reviewee = revieweeMember.getMember();
+        }
 
         // 3. 자기 자신 평가 방지
         if(userId.equals(requestDto.getRevieweeId())) {
@@ -62,7 +69,7 @@ public class ReviewService {
         Review review = Review.builder()
                 .project(project)
                 .reviewer(reviewer)
-                .reviewee(revieweeMember.getMember())
+                .reviewee(reviewee)
                 .rating(requestDto.getRating())
                 .build();
 
