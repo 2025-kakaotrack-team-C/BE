@@ -135,7 +135,7 @@ public class ProjectServiceImpl implements ProjectService{
         // TODO 팀 닉ㄱ네임 추가
         // 프로젝트 멤버 정보 생성
         var projectMemberResponse = project.getProjectMembers().stream()
-                .map(projectMember -> new ProjectMemberResponse(projectMember.getMember_id(), projectMember.getDepartment()))
+                .map(projectMember -> new ProjectMemberResponse(projectMember.getMember(), projectMember.getDepartment()))
                 .collect(Collectors.toList());
 
         return new IngProjectResponse(projectResponse, projectMemberResponse);
