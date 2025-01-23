@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+// 진행중인 프로젝트의 데이터 반환
 @Getter
 @NoArgsConstructor
 public class IngProjectResponse {
@@ -15,6 +16,7 @@ public class IngProjectResponse {
 
     public IngProjectResponse(ProjectResponse project, List<ProjectMemberResponse> projectMembers){
         this.project = project;
+
         this.projectMembers = projectMembers;
     }
 

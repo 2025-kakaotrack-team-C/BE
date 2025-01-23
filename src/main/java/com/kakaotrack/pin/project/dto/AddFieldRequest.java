@@ -5,6 +5,7 @@ import com.kakaotrack.pin.domain.Project;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+// 프로젝트 생성 시 분야 추가를 위한
 @Getter
 @NoArgsConstructor
 public class AddFieldRequest {

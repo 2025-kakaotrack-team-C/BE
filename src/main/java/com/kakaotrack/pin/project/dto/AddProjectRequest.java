@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.util.List;
 
+// 새 프로젝트 생성을 위한
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter

@@ -2,6 +2,7 @@ package com.kakaotrack.pin.project.dto;
 
 import lombok.Getter;
 
+// 프로젝트 세부 조회 때 분야 응답
 @Getter
 public class FieldResponse {
     private final long fieldId;
