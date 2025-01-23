@@ -1,6 +1,9 @@
 package com.kakaotrack.pin.review.service;
 
 import com.kakaotrack.pin.application.repository.ProjectMemberRepository;
+import com.kakaotrack.pin.mypage.entity.Language;
+import com.kakaotrack.pin.mypage.repository.LanguageRepository;
+import com.kakaotrack.pin.review.dto.MemberResponseDto;
 import com.kakaotrack.pin.review.dto.ReviewRequestDto;
 import com.kakaotrack.pin.review.dto.ReviewResponseDto;
 import com.kakaotrack.pin.review.entity.Project_Member;
@@ -20,6 +23,8 @@ public class ReviewService {
 
     private final ReviewRepository reviewRepository;
     private final ProjectMemberRepository project_memberRepository;
+    private final ProjectMemberRepository projectMemberRepository;
+    private final LanguageRepository languageRepository;
 
     // 리뷰 생성
     public ReviewResponseDto createReview(ReviewRequestDto requestDto, Long userId) {
@@ -56,6 +61,27 @@ public class ReviewService {
         List<Review> reviews = reviewRepository.findAllByRevieweeId(userId);
         return reviews.stream()
                 .map(ReviewResponseDto::from)
+                .collect(Collectors.toList());
+    }
+
+    // project member information
+    public List<MemberResponseDto> getProjectMembers(Long projectId) {
+        List<Project_Member> projectMembers = projectMemberRepository.findByProjectProjectId(projectId);
+
+        return projectMembers.stream()
+                .map(pm -> {
+                    List<Language> userLanguages = languageRepository.findByMember_Id(pm.getMember().getId());
+                    // Language가 없는 경우 기본값 0으로 처리
+                    Integer language = userLanguages.isEmpty() ? 0 : userLanguages.get(0).getLanguage();
+
+                    return MemberResponseDto.builder()
+                            .projectId(pm.getProject().getProjectId())
+                            .projectTitle(pm.getProject().getTitle())
+                            .nickname(pm.getMember().getNickname())
+                            .language(language)  // 언어가 없으면 0
+                            .department(pm.getDepartment())
+                            .build();
+                })
                 .collect(Collectors.toList());
     }
 

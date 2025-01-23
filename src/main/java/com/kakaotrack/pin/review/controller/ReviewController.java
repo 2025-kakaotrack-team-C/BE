@@ -1,11 +1,18 @@
 package com.kakaotrack.pin.review.controller;
 
+import com.kakaotrack.pin.jwt.member.Member;
+import com.kakaotrack.pin.jwt.repository.MemberRepository;
+import com.kakaotrack.pin.mypage.dto.MyPageResponseDTO;
+import com.kakaotrack.pin.mypage.service.MyPageService;
+import com.kakaotrack.pin.review.dto.MemberResponseDto;
 import com.kakaotrack.pin.review.dto.ReviewRequestDto;
 import com.kakaotrack.pin.review.dto.ReviewResponseDto;
 import com.kakaotrack.pin.review.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,6 +24,8 @@ import java.util.List;
 public class ReviewController {
 
     private final ReviewService reviewService;
+    private final MyPageService myPageService;
+    private final MemberRepository memberRepository;
 
     // 1. 리뷰 작성
     @PostMapping
@@ -33,6 +42,15 @@ public class ReviewController {
         return ResponseEntity.ok(reviews);
     }
 
+    @GetMapping("/project/member/{projectId}")
+    public ResponseEntity<List<MemberResponseDto>> getProjectMembers(@PathVariable Long projectId)
+    {
+        log.info("프로젝트 ID: {}", projectId);  // projectId가 제대로 들어오는지
+        List<MemberResponseDto> members = reviewService.getProjectMembers(projectId);
+        log.info("조회된 멤버 수: {}", members.size());  // 멤버가 조회되는지
+        return ResponseEntity.ok(members);
+    }
+
     // 프로젝트별 받은 리뷰 조회
     @GetMapping("/project/{id}")
     public ResponseEntity<List<ReviewResponseDto>> getProjectReviews(
@@ -40,4 +58,6 @@ public class ReviewController {
             @RequestBody ReviewResponseDto responseDto) {
         return ResponseEntity.ok(reviewService.getProjectReviews(id, responseDto));
     }
+
+
 }
