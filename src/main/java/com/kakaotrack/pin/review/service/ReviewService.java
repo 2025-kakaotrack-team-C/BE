@@ -2,6 +2,7 @@ package com.kakaotrack.pin.review.service;
 
 import com.kakaotrack.pin.application.repository.ProjectMemberRepository;
 import com.kakaotrack.pin.domain.Project;
+import com.kakaotrack.pin.jwt.member.Member;
 import com.kakaotrack.pin.mypage.entity.Language;
 import com.kakaotrack.pin.mypage.repository.LanguageRepository;
 import com.kakaotrack.pin.project.repository.ProjectRepository;
@@ -32,11 +33,18 @@ public class ReviewService {
 
     // 리뷰 생성
     public ReviewResponseDto createReview(ReviewRequestDto requestDto, Long userId) {
-        // 1. 리뷰어(로그인한 사용자)가 해당 프로젝트 멤버인지 확인
-        log.info("Project ID: {}, User ID: {}", requestDto.getProjectId(), userId); // check
+        // 프로젝트 조회
+        Project project = projectRepository.findById(requestDto.getProjectId())
+                .orElseThrow(() -> new IllegalArgumentException("해당 프로젝트가 존재하지 않습니다."));
 
-        Project_Member reviewerMember = project_memberRepository.findByProject_ProjectIdAndMember_Id(requestDto.getProjectId(), userId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 프로젝트의 멤버가 아닙니다."));
+        // 1. 리뷰어가 프로젝트 작성자이거나 프로젝트 멤버인지 확인
+        boolean isProjectCreator = project.getMember().getId().equals(userId);
+
+        if (!isProjectCreator) {
+            // 작성자가 아닌 경우 프로젝트 멤버인지 확인
+            project_memberRepository.findByProject_ProjectIdAndMember_Id(requestDto.getProjectId(), userId)
+                    .orElseThrow(() -> new IllegalArgumentException("해당 프로젝트의 멤버가 아닙니다."));
+        }
 
         // 2. 리뷰 대상자가 해당 프로젝트 멤버인지 확인
         Project_Member revieweeMember = project_memberRepository.findByProject_ProjectIdAndMember_Id(requestDto.getProjectId(), requestDto.getRevieweeId())
@@ -48,9 +56,12 @@ public class ReviewService {
         }
 
         // 4. 리뷰 생성 및 저장
+        Member reviewer = isProjectCreator ? project.getMember() :
+                project_memberRepository.findByProject_ProjectIdAndMember_Id(requestDto.getProjectId(), userId).get().getMember();
+
         Review review = Review.builder()
-                .project(reviewerMember.getProject())
-                .reviewer(reviewerMember.getMember())
+                .project(project)
+                .reviewer(reviewer)
                 .reviewee(revieweeMember.getMember())
                 .rating(requestDto.getRating())
                 .build();
