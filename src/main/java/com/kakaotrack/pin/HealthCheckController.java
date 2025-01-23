@@ -9,6 +9,6 @@ public class HealthCheckController {
 
     @GetMapping("/health")
     public String health() {
-        return "ok";
+        return "서버 실행중";
     }
 }
