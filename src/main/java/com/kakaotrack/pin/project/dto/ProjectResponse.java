@@ -17,7 +17,7 @@ public class ProjectResponse {
     private final int totalRange;   // 같은 프로젝트 id의 range 합계
     private final LocalDate deadline;
     private final List<Integer> departments;
-    private final Integer status;
+    private final Integer status;   // 상태 추가
     private final Integer difficult;
     private final String description;
 
