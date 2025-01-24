@@ -78,8 +78,8 @@ public class MyPageServiceImpl implements MyPageService{
                 })
                 .collect(Collectors.toList());
 
-        // 완료된 프로젝트 조회 (status = 4)
-        List<MyPageResponseDTO.ProjectStatusInfo> completedProjects = projectRepository.findByMemberAndStatus(member, 3) //modify
+        // 완료된 프로젝트 조회 (status = 3)
+        List<MyPageResponseDTO.ProjectStatusInfo> completedProjects = projectRepository.findByStatus(3) //modify
                 .stream()
                 .map(project -> {
                     MyPageResponseDTO.ProjectStatusInfo info = new MyPageResponseDTO.ProjectStatusInfo();
@@ -92,8 +92,9 @@ public class MyPageServiceImpl implements MyPageService{
                 })
                 .collect(Collectors.toList());
 
-        // 진행중인 프로젝트 조회 (status = 3)
-        List<MyPageResponseDTO.ProjectStatusInfo> ongoingProjects = projectRepository.findByMemberAndStatus(member, 2)//modify
+
+        // 진행중인 프로젝트 조회 (status = 2)
+        List<MyPageResponseDTO.ProjectStatusInfo> ongoingProjects = projectRepository.findByStatus(2)
                 .stream()
                 .map(project -> {
                     MyPageResponseDTO.ProjectStatusInfo info = new MyPageResponseDTO.ProjectStatusInfo();
