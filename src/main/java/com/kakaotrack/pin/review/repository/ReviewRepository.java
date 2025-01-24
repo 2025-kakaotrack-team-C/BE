@@ -10,4 +10,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     // 2. 특정 프로젝트에서 받은 리뷰 조회
     List<Review> findAllByProject_ProjectIdAndReviewee_Id(Long projectId, Long userId);
+
+    // ReviewRepository
+    List<Review> findByRevieweeId(Long userId);
 }

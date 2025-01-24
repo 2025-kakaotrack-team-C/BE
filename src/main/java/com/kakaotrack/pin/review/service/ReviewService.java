@@ -92,13 +92,21 @@ public class ReviewService {
 
         // 작성자 정보 생성
         List<Language> leaderLanguages = languageRepository.findByMember_Id(project.getMember().getId());
+        // 여기서 작성자의 rating 조회
+        Integer leaderRating = (int) Math.round(reviewRepository.findByRevieweeId(project.getMember().getId())
+                .stream()
+                .mapToInt(Review::getRating)
+                .average()
+                .orElse(0.0));
+
         MemberResponseDto leaderDto = MemberResponseDto.builder()
                 .projectId(project.getProjectId())
                 .projectTitle(project.getTitle())
-                .userId(project.getMember().getId())    // 추가
+                .userId(project.getMember().getId())
                 .nickname(project.getMember().getNickname())
                 .language(leaderLanguages.isEmpty() ? 0 : leaderLanguages.get(0).getLanguage())
                 .department(0)
+                .rating(leaderRating)  // rating 추가
                 .build();
 
         // 팀원 정보 조회
@@ -116,15 +124,25 @@ public class ReviewService {
 
     private MemberResponseDto convertToDto(Project_Member pm) {
         List<Language> userLanguages = languageRepository.findByMember_Id(pm.getMember().getId());
+
+        // 팀원의 rating 평균 계산 추가
+        Integer memberRating = (int) Math.round(reviewRepository.findByRevieweeId(pm.getMember().getId())
+                .stream()
+                .mapToInt(Review::getRating)
+                .average()
+                .orElse(0.0));
+
         return MemberResponseDto.builder()
                 .projectId(pm.getProject().getProjectId())
                 .projectTitle(pm.getProject().getTitle())
                 .nickname(pm.getMember().getNickname())
-                .userId(pm.getMember().getId())     // 추가
+                .userId(pm.getMember().getId())
                 .language(userLanguages.isEmpty() ? 0 : userLanguages.get(0).getLanguage())
                 .department(pm.getDepartment())
+                .rating(memberRating)  // rating 추가
                 .build();
     }
+
     // 프로젝트별 받은 리뷰 조회
     public List<ReviewResponseDto> getProjectReviews(Long projectId, ReviewResponseDto responseDto) {
         List<Review> reviews = reviewRepository.findAllByProject_ProjectIdAndReviewee_Id(

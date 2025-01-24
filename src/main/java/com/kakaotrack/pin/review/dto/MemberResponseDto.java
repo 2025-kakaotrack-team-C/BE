@@ -16,15 +16,17 @@ public class MemberResponseDto {
     private String nickname;
     private Integer language;
     private Integer department;
+    private Integer rating;  // rating 필드 추가
 
     @Builder
     public MemberResponseDto(Long projectId, String projectTitle,
-                             Long userId, String nickname, Integer language, Integer department) {
+                             Long userId, String nickname, Integer language, Integer department, Integer rating) {
         this.projectId = projectId;
         this.projectTitle = projectTitle;
         this.userId = userId;     // 추가
         this.nickname = nickname;
         this.language = language;
         this.department = department;
+        this.rating =rating;
     }
 }
