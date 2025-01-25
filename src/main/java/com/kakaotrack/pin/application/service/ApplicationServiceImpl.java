@@ -12,6 +12,8 @@ import com.kakaotrack.pin.jwt.repository.MemberRepository;
 import com.kakaotrack.pin.project.repository.FieldRepository;
 import com.kakaotrack.pin.project.repository.ProjectRepository;
 import com.kakaotrack.pin.review.entity.Project_Member;
+import com.kakaotrack.pin.review.entity.Review;
+import com.kakaotrack.pin.review.repository.ReviewRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,6 +29,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final ProjectRepository projectRepository;
     private final ProjectMemberRepository projectMemberRepository;
     private final FieldRepository fieldRepository;
+    private final ReviewRepository reviewRepository;
 
     // 지원서 저장
     public Application save(AddApplicationRequest request, String username, Long projectId) {
@@ -46,13 +49,28 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     }
 
-    // 지원서 조회
+    // 지원서 전체 조회
     public List<ApplicationResponse> findAll(){
         List<Application> applications = applicationRepository.findAll();
 
-        return applications.stream()
-                .map(ApplicationResponse::new)  // ApplicationResponse로 변환
-                .collect(Collectors.toList());  // 리스트로
+        // 지원서에 유저 아이디 넘겨줌
+        // -> 그 유저 아이디를 가지고 리뷰 엔티티에서 대상자가 같은 필드 조회
+        // -> 계산
+        // 조회된 지원서들 각각 수행하기 위한 반복문
+        return applications.stream().map(application -> {
+            // 지원서에 해당하는 멤버 아이디 조회 user_id
+            Long userId = application.getAppMember().getId();
+
+            // 해당 멤버의 평가된 점수 전부 반환
+            List<Review> reviews = reviewRepository.findAllByRevieweeId(userId);
+
+            double aveRating = reviews.stream()
+                    .mapToInt(Review::getRating)
+                    .average()
+                    .orElse(0.0);
+
+            return new ApplicationResponse(application, aveRating);
+        }).collect(Collectors.toList());
     }
 
     // 지원서 수락

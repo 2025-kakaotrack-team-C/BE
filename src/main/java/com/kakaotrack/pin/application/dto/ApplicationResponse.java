@@ -14,12 +14,14 @@ public class ApplicationResponse {
     private ProjectDTO project;
     private Integer department;
     private Integer status;
+    private double rating;
 
-    public ApplicationResponse(Application application) {
+    public ApplicationResponse(Application application, double rating) {
         this.applicationId = application.getApplicationId();
         this.member = new MemberDTO(application.getAppMember());
         this.project = new ProjectDTO(application.getAppProject());
         this.department = application.getDepartment();
         this.status = application.getStatus();
+        this.rating = rating;
     }
 }

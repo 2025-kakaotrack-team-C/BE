@@ -9,9 +9,11 @@ import lombok.NoArgsConstructor;
 public class MemberDTO {
     private Long id;
     private String username;
+    private String nickname;
 
     public MemberDTO(Member member) {
         this.id = member.getId();
         this.username = member.getUsername();
+        this.nickname = member.getNickname();
     }
 }
