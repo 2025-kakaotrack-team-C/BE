@@ -32,6 +32,7 @@ public class ReviewService {
     private final ProjectRepository projectRepository;  // 추가
 
     // 리뷰 생성
+    // 리뷰 생성
     public ReviewResponseDto createReview(ReviewRequestDto requestDto, Long userId) {
         // 프로젝트 조회
         Project project = projectRepository.findById(requestDto.getProjectId())
@@ -72,6 +73,10 @@ public class ReviewService {
                 .reviewee(reviewee)
                 .rating(requestDto.getRating())
                 .build();
+
+        // 프로젝트의 status를 4로 업데이트
+        project.setStatus(4);
+        projectRepository.save(project);
 
         return ReviewResponseDto.from(reviewRepository.save(review));
     }
