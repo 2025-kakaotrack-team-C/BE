@@ -74,11 +74,24 @@ public class ReviewService {
                 .rating(requestDto.getRating())
                 .build();
 
-        // 프로젝트의 status를 4로 업데이트
-        project.setStatus(4);
-        projectRepository.save(project);
+        Review savedReview = reviewRepository.save(review);
 
-        return ReviewResponseDto.from(reviewRepository.save(review));
+        // 프로젝트의 전체 멤버 수 계산 (프로젝트 생성자 + 프로젝트 멤버)
+        long totalMembers = 1 + project_memberRepository.countByProject_ProjectId(project.getProjectId());
+
+        // 현재까지 작성된 리뷰 수
+        long completedReviews = reviewRepository.countByProject_ProjectId(project.getProjectId());
+
+        // 예상되는 총 리뷰 수 (n명이 각각 n-1명을 리뷰)
+        long expectedTotalReviews = totalMembers * (totalMembers - 1);
+
+        // 모든 멤버의 리뷰가 완료되었을 때만 status를 4로 변경
+        if (completedReviews >= expectedTotalReviews) {
+            project.setStatus(4);
+            projectRepository.save(project);
+        }
+
+        return ReviewResponseDto.from(savedReview);
     }
 
     // 내가 받은 모든 리뷰 조회
