@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -78,9 +79,15 @@ public class MyPageServiceImpl implements MyPageService{
                 })
                 .collect(Collectors.toList());
 
-        // 완료된 프로젝트 조회 (status = 3)
-        List<MyPageResponseDTO.ProjectStatusInfo> completedProjects = projectRepository.findByStatus(3) //modify
+        // 완료된 프로젝트 조회 (status = 3이면서 해당 멤버의 프로젝트만)
+        List<MyPageResponseDTO.ProjectStatusInfo> completedProjects = projectRepository
+                .findByStatusIn(Arrays.asList(3, 4))  // status가 3 또는 4인 완료된 프로젝트 전체 조회
                 .stream()
+                .filter(project ->
+                        project.getMember().getId().equals(member.getId()) ||  // 내가 작성자이거나
+                                project.getProjectMembers().stream()  // 또는 내가 팀원인 경우
+                                        .anyMatch(pm -> pm.getMember().getId().equals(member.getId()))
+                )
                 .map(project -> {
                     MyPageResponseDTO.ProjectStatusInfo info = new MyPageResponseDTO.ProjectStatusInfo();
                     info.setProjectId(project.getProjectId());
@@ -91,6 +98,10 @@ public class MyPageServiceImpl implements MyPageService{
                     return info;
                 })
                 .collect(Collectors.toList());
+
+
+
+
 
 
         // 진행중인 프로젝트 조회 (status = 2)

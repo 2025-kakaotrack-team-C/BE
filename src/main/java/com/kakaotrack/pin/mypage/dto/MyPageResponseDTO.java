@@ -26,6 +26,7 @@ public class MyPageResponseDTO {
     private List<ProjectStatusInfo> completedProjects;
     private List<ProjectStatusInfo> ongoingProjects;
 
+
     @Getter
     @Setter
     public static class ProjectStatusInfo {
