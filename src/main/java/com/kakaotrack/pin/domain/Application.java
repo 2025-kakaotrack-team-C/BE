@@ -56,6 +56,7 @@ public class Application {
         this.status = (status != null) ? status : 1;
     }
 
+    // status 값 변경
     public void setStatus(Integer status) {
         this.status = status;
     }
